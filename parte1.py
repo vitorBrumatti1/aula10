@@ -1,8 +1,3 @@
-# ============================================================
-# ALGORITMOS E ESTRUTURAS DE DADOS I
-# Parte 1: Exercícios de Fixação e Sintaxe
-# ============================================================
-
 print("=" * 50)
 print("EXERCÍCIO 1 - Lista de 10 zeros com for")
 print("=" * 50)
