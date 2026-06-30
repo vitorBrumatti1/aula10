@@ -70,7 +70,9 @@ class TelaInicial(arcade.View):
 class JanelaJogo(arcade.Window):
     def __init__(self):
         super().__init__(800, 600, "Desafio Final - Coletor Pro")
-        arcade.set_background_color(arcade.color.AMAZON) # [8, 14]
+        arcade.set_background_color(arcade.color.AMAZON)
+
+        self.mostrar_menu = True 
         self.setup()
 
     def setup(self):
@@ -110,20 +112,23 @@ class JanelaJogo(arcade.Window):
     def on_draw(self):
         self.clear()
 
-        if not self.jogo_finalizado:
-            self.sprite_moedas.draw()
-            self.sprite_inimigos.draw()
-            self.sprite_jogador.draw()
-
-            arcade.draw_text(f"Pontos: {self.pontuacao}", 10, 570, arcade.color.WHITE, 14)
-            arcade.draw_text(f"Tempo: {self.tempo:.2f}s", 10, 550, arcade.color.WHITE, 12)
-        else:
+        if self.mostrar_menu:
+            arcade.draw_text("Um dos jogos já feitos", 200, 400, arcade.color.YELLOW, 40)
+            arcade.draw_text("Pressione ENTER para começar", 220, 300, arcade.color.WHITE, 16)
+        elif self.jogo_finalizado:
             arcade.draw_text("PARABÉNS! JOGO CONCLUÍDO", 150, 350, arcade.color.YELLOW, 30)
             arcade.draw_text(f"Pontuação Final: {self.pontuacao} | Tempo: {self.tempo:.2f}s", 200, 300, arcade.color.WHITE, 16)
             arcade.draw_text("Pressione R para recomeçar ou ESC para sair", 220, 260, arcade.color.LIGHT_GRAY, 12)
+        else :
+            self.sprite_moedas.draw()
+            self.sprite_inimigos.draw()
+            self.sprite_jogador.draw()
+            arcade.draw_text(f"Pontos: {self.pontuacao}", 10, 570, arcade.color.WHITE, 14)
+            arcade.draw_text(f"Tempo: {self.tempo:.2f}s", 10, 550, arcade.color.WHITE, 12)
+        
 
     def on_update(self, delta_time):
-        if self.jogo_finalizado:
+        if self.jogo_finalizado or self.mostrar_menu:
             return
 
         self.tempo += delta_time
@@ -149,6 +154,9 @@ class JanelaJogo(arcade.Window):
             self.jogo_finalizado = True
 
     def on_key_press(self, key, modifiers):
+        if self.mostrar_menu:
+            if key == arcade.key.ENTER:
+                self.mostrar_menu = False
         if key == arcade.key.UP or key == arcade.key.W:
             self.jogador.change_y = self.velocidade_base
         if key == arcade.key.DOWN or key == arcade.key.S:
